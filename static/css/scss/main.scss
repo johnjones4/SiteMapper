@@ -1,0 +1,174 @@
+@import 'reset.scss';
+
+$color_blue: #638CF3;
+$color_blue_trans: rgba(99,140,243,0.5);
+$color_dark_blue: #20449E;
+$color_yellow: #FFE356;
+$color_tan: #FFA456;
+
+@mixin whiteGradient {
+	$color_1: rgba(255,255,255,0.65);
+	$color_2: rgba(255,255,255,0.75);
+	background: $color_1;
+	background: -moz-linear-gradient(top, $color_1 0%, $color_2 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,$color_1), color-stop(100%,$color_2));
+	background: linear-gradient(to bottom right, $color_1 0%,$color_2 100%); /* W3C */
+}
+
+@mixin transitionAll($speed) {
+	transition: all $speed;
+	-webkit-transition: all $speed;
+	-moz-transition: all $speed;
+	-ms-transition: all $speed;
+	-o-transition: all $speed;
+}
+
+body {
+	background: url(../img/cartographer_light.png);
+	font-family: 'Alef', sans-serif;
+	font-size: 20px;
+	line-height: 1em;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-weight: bold;
+	text-transform: lowercase;
+}
+
+header {
+	padding: 0.5em 0 1em 0;
+
+	h1 {
+		font-size: 2.5em;
+		line-height: 1em;
+		color: $color_dark_blue;
+		text-align: center;
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+	}
+}
+
+section#primary .window {
+	opacity: 1;
+	@include whiteGradient;
+	@include transitionAll(0.5s);
+	border: solid 1px $color_blue_trans;
+	box-shadow: 0 0 10px rgba(0,0,0,0.25);
+	color: #333;
+	border-radius: 3px;
+
+	&.will-show {
+		opacity: 0;
+		margin-top: auto;
+	}
+	&.done {
+		opacity: 0;
+		margin-top: 100px;
+	}
+	&.window-standard {
+		width: 600px;
+		overflow: auto;
+		margin: auto auto auto auto;
+		padding: 1em;
+
+		input[type=text],input[type=email] {
+			border: solid 1px $color_blue;
+			border-right: none;
+			padding: 3px;
+			outline: none;
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
+			display: block;
+			float: left;
+			margin: 0;
+		}
+		input[type=submit] {
+			border: solid 1px $color_blue;
+			outline: none;
+			background: $color_blue;
+			color: #fff;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			display: block;
+			float: left;
+			padding: 4px 10px 8px 8px;
+			margin: 0;
+			text-transform: lowercase;
+			cursor: pointer;
+		}
+
+		&.start {
+			label {
+				display: block;
+				clear: both;
+				text-align: center;
+				font-size: 1.5em;
+				line-height: 1em;
+				padding: 0 0 0.5em 0;
+			}
+			input[type=text] {
+				font-size: 1.5em;
+				line-height: 1em;
+				width: 510px;
+			}
+			input[type=submit] {
+				font-size: 1.25em;
+				box-shadow: none;
+				@include transitionAll(0.5s);
+			}
+			form.ready input[type=submit] {
+				box-shadow: 0 0 15px $color_tan;
+			}
+		}
+		&.map-temp {
+			form {
+				display: block;
+				margin: 0.5em 0 0 0;
+			}
+			label {
+				display: block;
+				float: left;
+				margin: 5px 0.25em 0 0;
+				font-size: 1.25em;
+				line-height: 1em;
+			}
+			input[type=email] {
+				font-size: 1.1em;
+				width: 300px;
+			}
+			input[type=submit] {
+				font-size: 1.1em;
+				padding: 2px 10px 4px 8px;
+			}
+		}
+	}
+	&.window-full {
+		margin: 0 1em 1em 1em;
+		padding: 1em;
+		color: #fff;
+
+		&.map {
+			.node {
+				circle {
+					fill: $color_tan;
+					stroke: #999;
+				}
+				text {
+					fill: $color_dark_blue;
+					font-size: 14px;
+				}
+			}
+			.link {
+				stroke: #999;
+				fill: none;
+			}
+		}
+	}
+}
+
+footer {
+
+}
