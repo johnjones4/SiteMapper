@@ -1,41 +1,67 @@
 var config = require('./config');
 var mapper = require('./mapper');
 var mapperstorage = require('./mapperstorage');
-var email = require('emailjs');
 var express = require('express');
+var ObjectID = require('mongodb').ObjectID;
+var BSON = require('mongodb').BSONPure;
 
-mapperstorage.configure(function() {
+var secKeys = {};
+
+mapperstorage.configure(function(collection) {
 	var app  = express();
 	app.use(express.static(__dirname + '/static'));
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.session({ secret: "keyboard cat" }));
 
-	app.get('/map/new',function(req, res) {
-		if (req.query && req.query.domain) {
-			mapper.mapSite('http://johnjonesfour.com',10,function(job) {
-				var server  = email.server.connect({
-					user: config.smtp.user, 
-					password: config.smtp.password, 
-					host: config.smtp.host, 
-					ssl: config.smtp.ssl,
-					port: config.smtp.port
-				});
-				server.send({
-					text:    JSON.stringify(job,null,true), 
-					from:    "John Jones <john@phoenix4.com>", 
-					to:      "johnjones4@gmail.com",
-					subject: "Your Map of " + job.domain + " is Complete"
-				}, function(err, message) { console.log(err); });
+	app.post('/map',function(req, res) {
+		if (req.body && req.body.domain) {
+			mapper.mapSite('http://'+req.body.domain,10,function(job) {
+				secKeys[job._id.toString()] = req.sessionID;
+				// res.json(job);
+				// res.end();
+				// console.log(job._id);
+				res.send(200,JSON.stringify(job));
 			});
 		} else {
-			res.json(false);
+			res.send(500,'');
 		}
 	});
 
+	var jobForId = function(req,res) {
+		collection.findOne({
+			_id: new BSON.ObjectID(req.params.id)
+		},function(err,doc){
+			if (err) {
+				console.log(err);
+				res.send(500,'');
+			} else if (doc) {
+				res.send(200,JSON.stringify(doc));
+			}
+		});
+	}
+
+	app.put('/map/:id',function(req,res) {
+		var id = req.params.id;
+		if (secKeys[id] && secKeys[id] == req.sessionID) {
+			var performSet = function(set) {
+				collection.update({
+					_id: new BSON.ObjectID(id)
+				}, {
+					$set:set
+				},{
+					w: 0
+				});
+			}
+			if (req.body) {
+				if (req.body.email) performSet({email:req.body.email});
+			}
+		}
+		jobForId(req,res);
+	});
+
 	app.get('/map/:id',function(req, res) {
-		res.send('Map with id ');
-		//req.params.id
+		jobForId(req,res);
 	});
 
 	app.listen(1228, function() {

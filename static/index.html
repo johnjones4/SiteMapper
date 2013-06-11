@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>sitemapper</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width" />
+        <link href='http://fonts.googleapis.com/css?family=Alef:400,700' rel='stylesheet' type='text/css' />
+        <link rel="stylesheet" href="css/main.css" />
+        <script src="js/vendor/modernizr.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1><a href="/">SiteMapper</a></h1>
+        </header>
+        <section id="primary" role="main"></section>
+        <script type="text/template" id="start_template">
+            <form>
+                <label for="domain">What domain do you want to map?</label>
+                <input type="text" placeholder="example.com" name="domain" />
+                <input type="submit" value="Map!" />
+            </form>
+        </script>
+        <script type="text/template" id="map_temp_template">
+            <p>Building your sitemap will take some time. You can hang around until it's ready, or let us alert you via email by entering your address below.</p>
+            <form>
+                <label for="email">Email:</label>
+                <input type="email" placeholder="john@example.com" name="email" />
+                <input type="submit" value="Save" />
+            </form>
+        </script>
+        <script type="text/template" id="map_template">
+            <div id="map-holder"></div>
+        </script>
+        <script data-main="js/main.js" src="js/vendor/require.js"></script>
+    </body>
+</html>

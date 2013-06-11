@@ -30,7 +30,11 @@ var settings = {
 	allJobsDone: function(jobid) {
 		console.log('NO ALLJOBSDONE SET');
 	},
-	regex: /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+	domainInQueue: function(domain) {
+		
+	},
+	//regex: //ig,
+	regex: /(href="([^"]*")|(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]))/g
 }
 
 var tick = function() {
@@ -52,26 +56,36 @@ var tick = function() {
 					var urls = str.match(settings.regex);
 					if (urls != null) {
 						urls.forEach(function(urlstr) {
-							var urlObj = url.parse(urlstr);
-							if (urlObj.host == job.domain && urlObj.pathname.split('/').length <= job.depth) {
-								settings.uniquenesCheck(urlstr,job.id,function(result,domainsLeft) {
-									if (result) {
-										settings.enqueue({
-											url: urlObj,
-											jobid: job.id
-										});
-									} else if (!domainsLeft) {
-										settings.jobDone(job.id);
+							urlstr = urlstr.replace(/(href=|")/ig,'');
+							if (urlstr.length > 1) {
+								if (urlstr.indexOf('http') != 0) {
+									if (urlstr.charAt(0) != '/') {
+										urlstr = '/'+urlstr;
 									}
-								});
+									urlstr = 'http://'+job.domain+urlstr;
+								}
+								var urlObj = url.parse(urlstr);
+								if (urlObj.host == job.domain && urlObj.pathname.split('/').length <= job.depth) {
+									settings.uniquenesCheck(urlstr,job._id,function(result,domainsLeft) {
+										if (result) {
+											settings.enqueue({
+												url: urlObj,
+												jobid: job._id
+											});
+										} else if (!domainsLeft) {
+											settings.jobDone(job._id);
+										}
+									});
+								}
 							}
 						});
+					} else if (!settings.domainInQueue(data.url.host)) {
+						settings.jobDone(job._id);
 					}
 				});
 			}).end();
 		} else {
-			settings.allJobsDone();
-			exports.stop();
+			//settings.allJobsDone();
 		}
 	});
 }
@@ -80,16 +94,16 @@ exports.set = function(key,val) {
 	settings[key] = val;
 }
 
-exports.mapSite = function(urlstr,depth,alertfn) {
+exports.mapSite = function(urlstr,depth,startedfn) {
 	var urlObj = url.parse(urlstr);
 	settings.newJob({
 		domain: urlObj.host,
-		depth: depth,
-		alertfn: alertfn
-	},function(id) {
+		depth: depth
+	},function(job) {
+		startedfn(job);
 		settings.enqueue({
-			url: urlObj,
-			jobid: id
+			url: url.parse(urlstr),
+			jobid: job._id
 		});	
 	});
 	exports.start();
