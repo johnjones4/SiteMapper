@@ -64,7 +64,7 @@ mapperstorage.configure(function(collection) {
 		jobForId(req,res);
 	});
 
-	app.listen(1228, function() {
+	app.listen(config.site.port, function() {
 	   console.log("Server started");
 	});
 });

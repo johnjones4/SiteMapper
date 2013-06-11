@@ -14,5 +14,6 @@ exports.smtp = {
 }
 
 exports.site = {
-	domain: 'localhost:1228'
+	domain: 'localhost:1230',
+	port: 1230
 }
