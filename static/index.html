@@ -14,10 +14,21 @@
         <script src="js/vendor/modernizr.min.js"></script>
     </head>
     <body>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=170598156449861";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
         <header>
             <h1><a href="/">SiteMapper</a></h1>
             <nav class="buttons">
-                <iframe class="fork" src="http://ghbtns.com/github-btn.html?user=johnjones4&repo=SiteMapper&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+                <a href="https://twitter.com/share" class="twitter-share-button button" data-url="http://sitemapper.johnjonesfour.com" data-via="johnjones4">Tweet</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                <div class="fb-like" data-href="http://sitemapper.johnjonesfour.com/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="segoe ui"></div>
+                <iframe class="button fork" src="http://ghbtns.com/github-btn.html?user=johnjones4&repo=SiteMapper&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
             </nav>
         </header>
         <section id="primary" role="main"></section>

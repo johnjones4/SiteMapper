@@ -146,7 +146,9 @@ exports.configure = function(callback) {
 		var enqueue = function(job,queueitem) {
 			queue.push(queueitem);
 			job.indexed.push(queueitem.url.href);
-
+			saveJob(job);
+		}
+		var mapURL = function(job,queueitem) {
 			if (job && queueitem.url.path != '/') {
 				var pathComponents = queueitem.url.path.substring(1).split('/');
 				var getTreeIndex = function(tree,name) {
@@ -172,9 +174,8 @@ exports.configure = function(callback) {
 					}
 					lastTree = lastTree.components[index];
 				}
+				saveJob(job);
 			}
-
-			saveJob(job);
 		}
 
 
@@ -186,6 +187,7 @@ exports.configure = function(callback) {
 		mapper.set('jobDone',jobDone);
 		mapper.set('allJobsDone',allJobsDone);
 		mapper.set('domainInQueue',domainInQueue);
+		mapper.set('mapURL',mapURL);
 
 		callback(collection);
 	});

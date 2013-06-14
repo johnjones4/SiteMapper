@@ -64,8 +64,16 @@ header {
 		float: right;
 		text-align: right;
 
-		iframe.fork {
-			margin-top: 4px;
+		.button {
+			margin-left: 0.5em;
+
+			&.fork {
+				margin-top: 4px;
+			}
+
+			&.twitter-share-button {
+				width: 86px !important;
+			}
 		}
 	}
 }

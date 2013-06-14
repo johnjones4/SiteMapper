@@ -73,8 +73,12 @@ header {
     width: 75%;
     float: right;
     text-align: right; }
-    header nav.buttons iframe.fork {
-      margin-top: 4px; }
+    header nav.buttons .button {
+      margin-left: 0.5em; }
+      header nav.buttons .button.fork {
+        margin-top: 4px; }
+      header nav.buttons .button.twitter-share-button {
+        width: 86px !important; }
 
 section#primary .window {
   opacity: 1;

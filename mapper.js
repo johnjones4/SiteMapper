@@ -33,6 +33,8 @@ var settings = {
 	domainInQueue: function(domain) {
 		
 	},
+	mapURL: function(job,data) {},
+	//regex: /href="([^"]*")/ig
 	regex: /(href="([^"]*")|(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]))/ig
 }
 
@@ -47,8 +49,14 @@ var tick = function() {
 				host: data.url.host,
 				path: data.url.path
 			},function(response) {
-				//console.log(response.headers['content-type'].indexOf('text/html') == 0,response.headers['content-type']);
+				//console.log(data.url.href,response.headers['content-type'].indexOf('text/html') == 0,response.headers['content-type']);
 				if (response.headers['content-type'] && response.headers['content-type'].indexOf('text/html') == 0) {
+
+					settings.mapURL(job,{
+						url: data.url,
+						jobid: job._id
+					});
+
 					var str = ''
 					response.on('error',function(e) {
 						console.log(e);
@@ -60,18 +68,21 @@ var tick = function() {
 						//console.log('Downloaded ' + str.length + ' bytes');
 						var foundURLs = str.match(settings.regex);
 						if (foundURLs != null) {
+							//console.log(foundURLs);
 							//console.log('Found ' + foundURLs.length + ' URLs');
 							for(var i=0;i<foundURLs.length;i++) {
 								var urlstr = foundURLs[i].replace(/(href=|")/ig,'');
-								if (urlstr.length > 1) {
+								//console.log(urlstr, urlstr.length > 1 , urlstr.indexOf('#') < 0 , urlstr.indexOf('mailto') != 0)
+								if (urlstr.length > 1 && urlstr.indexOf('#') < 0 && urlstr.indexOf('mailto') != 0) {
 									if (urlstr.indexOf('http') != 0) {
 										if (urlstr.charAt(0) == '/') {
 											urlstr = data.url.protocol+'//'+data.url.host+urlstr;
 										} else {
-											urlstr = data.url.href+urlstr;
+											urlstr = data.url.href;
 										}
 									}
 									var urlObj = url.parse(urlstr);
+									//console.log(urlObj , urlObj.host == job.domain , urlObj.pathname.split('/').length <= job.depth , settings.uniquenesCheck(urlObj,job) , urlObj.href);
 									if (urlObj 
 										&& urlObj.host == job.domain 
 										&& urlObj.pathname.split('/').length <= job.depth 
