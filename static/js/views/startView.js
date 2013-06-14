@@ -13,15 +13,17 @@ define(['../vendor/jquery','../vendor/backbone','../vendor/underscore'],
 			var _this = this;
 			this.$el.find('form').submit(function(event) {
 				try{event.preventDefault()} catch(e){}
-				_this.model.set('domain',$(this).find('input[type=text]').val());
-				_this.model.save(null,{
-					success: function(model) {
-						window.location.hash = '#/map/'+model.id;
-					},
-					error: function() {
-						//TODO
-					}
-				})
+				if ($(this).is('.ready')) {
+					_this.model.set('domain',$(this).find('input[type=text]').val());
+					_this.model.save(null,{
+						success: function(model) {
+							window.location.hash = '#/map/'+model.id;
+						},
+						error: function() {
+							//TODO
+						}
+					});
+				}
 				return false;
 			})
 			this.$el.find('input[type=text]').keyup(function() {

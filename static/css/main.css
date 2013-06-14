@@ -47,20 +47,34 @@ body {
   font-size: 20px;
   line-height: 1em; }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: bold;
+h1 {
   text-transform: lowercase; }
 
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold; }
+
 header {
-  padding: 0.5em 0 1em 0; }
+  padding: 0.5em 1em;
+  margin: 0 0 1em 0;
+  background: #20449e;
+  border-bottom: solid 1px #ffa456;
+  height: 1.5em; }
   header h1 {
-    font-size: 2.5em;
+    width: 25%;
+    float: left;
+    font-size: 1.5em;
     line-height: 1em;
-    color: #20449e;
-    text-align: center; }
+    color: #fff;
+    text-align: left; }
     header h1 a {
       color: inherit;
       text-decoration: none; }
+  header nav.buttons {
+    width: 75%;
+    float: right;
+    text-align: right; }
+    header nav.buttons iframe.fork {
+      margin-top: 4px; }
 
 section#primary .window {
   opacity: 1;
@@ -115,11 +129,7 @@ section#primary .window {
       cursor: pointer; }
     section#primary .window.window-standard.start label {
       display: block;
-      clear: both;
-      text-align: center;
-      font-size: 1.5em;
-      line-height: 1em;
-      padding: 0 0 0.5em 0; }
+      margin: 0 0 0.25em 0; }
     section#primary .window.window-standard.start input[type=text] {
       font-size: 1.5em;
       line-height: 1em;
@@ -132,8 +142,6 @@ section#primary .window {
       -moz-transition: all 0.5s;
       -ms-transition: all 0.5s;
       -o-transition: all 0.5s; }
-    section#primary .window.window-standard.start form.ready input[type=submit] {
-      box-shadow: 0 0 15px #ffa456; }
     section#primary .window.window-standard.map-temp form {
       display: block;
       margin: 0.5em 0 0 0; }
@@ -142,13 +150,40 @@ section#primary .window {
       float: left;
       margin: 5px 0.25em 0 0;
       font-size: 1.25em;
-      line-height: 1em; }
+      line-height: 1em;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s; }
     section#primary .window.window-standard.map-temp input[type=email] {
       font-size: 1.1em;
-      width: 300px; }
+      width: 300px;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s; }
     section#primary .window.window-standard.map-temp input[type=submit] {
       font-size: 1.1em;
-      padding: 2px 10px 4px 8px; }
+      padding: 2px 10px 4px 8px;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s; }
+    section#primary .window.window-standard.map-temp p.complete {
+      display: block;
+      float: left;
+      margin: 0.4em 0 0 0.5em;
+      opacity: 0;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s; }
+    section#primary .window.window-standard.map-temp form.complete p.complete {
+      opacity: 1; }
   section#primary .window.window-full {
     margin: 0 1em 1em 1em;
     padding: 1em;
@@ -162,3 +197,13 @@ section#primary .window {
     section#primary .window.window-full.map .link {
       stroke: #999;
       fill: none; }
+  section#primary .window h2 {
+    font-size: 1.5em;
+    line-height: 1em;
+    margin: 0 0 0.25em 0; }
+  section#primary .window form.ready input[type=submit] {
+    box-shadow: 0 0 15px #ffa456 !important; }
+    section#primary .window form.ready input[type=submit]:hover {
+      box-shadow: 0 0 15px #20449e !important; }
+    section#primary .window form.ready input[type=submit]:active {
+      background: #20449e; }

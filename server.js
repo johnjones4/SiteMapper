@@ -8,6 +8,8 @@ var BSON = require('mongodb').BSONPure;
 var secKeys = {};
 
 mapperstorage.configure(function(collection) {
+	//mapper.mapSite('http://johnjonesfour.com',10,function(job) {});
+	//return;
 	var app  = express();
 	app.use(express.static(__dirname + '/static'));
 	app.use(express.cookieParser());
@@ -18,9 +20,6 @@ mapperstorage.configure(function(collection) {
 		if (req.body && req.body.domain) {
 			mapper.mapSite('http://'+req.body.domain,10,function(job) {
 				secKeys[job._id.toString()] = req.sessionID;
-				// res.json(job);
-				// res.end();
-				// console.log(job._id);
 				res.send(200,JSON.stringify(job));
 			});
 		} else {

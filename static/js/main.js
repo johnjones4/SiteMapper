@@ -67,7 +67,10 @@ requirejs([
 			map.fetch({
 				success: function (map) {
 					if (map.get('status')) {
-						setActiveView(new MapTempView({model:map}));
+						var view = new MapTempView({model:map});
+						setActiveView(view,function() {
+							view.render();
+						});
 					} else {
 						var view = new MapView({model:map});
 						setActiveView(view,function() {

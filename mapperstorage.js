@@ -108,28 +108,21 @@ exports.configure = function(callback) {
 				}
 			});
 		}
-		var uniquenesCheck = function(urlstr,jobid,callback) {
-			loadJob(jobid,function(job) {
-				var urlobj = url.parse(urlstr);
-				var domainInQueue = false;
-				for(var i=0;i<queue.length;i++) {
-					if (queue[i].url.href == urlstr) {
-						callback(false,true);
-						return;
-					}
-					if (queue[i].url.host == urlobj.host) {
-						domainInQueue = true;
-					}
+		var uniquenesCheck = function(urlobj,job) {
+			var r = true;
+			for(var i=0;i<job.indexed.length;i++) {
+				//console.log(job.indexed[i] == urlobj.href, job.indexed[i] , urlobj.href);
+				if (job.indexed[i] == urlobj.href) {
+					r = false;
 				}
-				for(var i=0;i<job.indexed.length;i++) {
-					//console.log(job.indexed[i] == urlstr,job.indexed[i],urlstr);
-					if (job.indexed[i] == urlstr) {
-						callback(false,domainInQueue);
-						return;
-					}
+			}
+			for(var i=0;i<queue.length;i++) {
+				if (queue[i].url.href == urlobj.href) {
+					r = false;
 				}
-				callback(true,domainInQueue);
-			});
+			}
+		//	console.log(r,urlobj.href);
+			return r;
 		}
 		var domainInQueue = function(domain) {
 			for(var i=0;i<queue.length;i++) {
@@ -141,6 +134,7 @@ exports.configure = function(callback) {
 		}
 		var dequeue = function(callback) {
 			var next = queue.shift();
+			//console.log('Queue: ' + queue.length);
 			if (next) {
 				loadJob(next.jobid,function(job) {
 					callback(next,job);
@@ -149,38 +143,38 @@ exports.configure = function(callback) {
 				callback(null,null);
 			}
 		}
-		var enqueue = function(queueitem) {
-			loadJob(queueitem.jobid,function(job) {
-				queue.push(queueitem);
-				job.indexed.push(queueitem.url.href);
-				if (job && queueitem.url.path != '/') {
-					var pathComponents = queueitem.url.path.substring(1).split('/');
-					var getTreeIndex = function(tree,name) {
-						if (tree.components) {
-							for(var i=0;i<tree.components.length;i++) {
-								if (tree.components[i].name == name) {
-									return i;
-								}
+		var enqueue = function(job,queueitem) {
+			queue.push(queueitem);
+			job.indexed.push(queueitem.url.href);
+
+			if (job && queueitem.url.path != '/') {
+				var pathComponents = queueitem.url.path.substring(1).split('/');
+				var getTreeIndex = function(tree,name) {
+					if (tree.components) {
+						for(var i=0;i<tree.components.length;i++) {
+							if (tree.components[i].name == name) {
+								return i;
 							}
 						}
-						return -1;
 					}
-					var lastTree = job.tree;
-					for(var i=0;i<pathComponents.length;i++) {
-						var index = getTreeIndex(lastTree,pathComponents[i]);
-						if (index < 0) {
-							index = lastTree.components.length;
-							if (!lastTree.components) lastTree.components = [];
-							lastTree.components.push({
-								name: pathComponents[i],
-								components: []
-							});
-						}
-						lastTree = lastTree.components[index];
-					}
-					saveJob(job);
+					return -1;
 				}
-			});
+				var lastTree = job.tree;
+				for(var i=0;i<pathComponents.length;i++) {
+					var index = getTreeIndex(lastTree,pathComponents[i]);
+					if (index < 0) {
+						index = lastTree.components.length;
+						if (!lastTree.components) lastTree.components = [];
+						lastTree.components.push({
+							name: pathComponents[i],
+							components: []
+						});
+					}
+					lastTree = lastTree.components[index];
+				}
+			}
+
+			saveJob(job);
 		}
 
 

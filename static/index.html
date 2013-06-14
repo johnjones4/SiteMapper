@@ -16,21 +16,27 @@
     <body>
         <header>
             <h1><a href="/">SiteMapper</a></h1>
+            <nav class="buttons">
+                <iframe class="fork" src="http://ghbtns.com/github-btn.html?user=johnjones4&repo=SiteMapper&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+            </nav>
         </header>
         <section id="primary" role="main"></section>
         <script type="text/template" id="start_template">
+            <h2>Explore your site</h2>
             <form>
-                <label for="domain">What domain do you want to map?</label>
+                <label for="domain">Enter a domain to build a visual site map.</label>
                 <input type="text" placeholder="example.com" name="domain" />
                 <input type="submit" value="Map!" />
             </form>
         </script>
         <script type="text/template" id="map_temp_template">
+            <h2>Workin' on it</h2>
             <p>Building your sitemap will take some time. You can hang around until it's ready, or let us alert you via email by entering your address below.</p>
             <form>
                 <label for="email">Email:</label>
                 <input type="email" placeholder="john@example.com" name="email" />
                 <input type="submit" value="Save" />
+                <p class="complete">Got it!</p>
             </form>
         </script>
         <script type="text/template" id="map_template">
