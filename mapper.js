@@ -46,9 +46,10 @@ var tick = function() {
 			var protocol = http;
 			if (data.url.protocol == 'https:') protocol = https;
 			protocol.request({
-				host: data.url.host,
+				host: data.url.host.replace('/'),
 				path: data.url.path
 			},function(response) {
+				//console.log(response.headers);
 				//console.log(data.url.href,response.headers['content-type'].indexOf('text/html') == 0,response.headers['content-type']);
 				if (response.headers['content-type'] && response.headers['content-type'].indexOf('text/html') == 0) {
 
@@ -58,14 +59,11 @@ var tick = function() {
 					});
 
 					var str = ''
-					response.on('error',function(e) {
-						console.log(e);
-					})
 					response.on('data', function (chunk) {
 						str += chunk;
 					});
 					response.on('end', function () {
-						//console.log('Downloaded ' + str.length + ' bytes');
+						console.log('Downloaded ' + str.length + ' bytes');
 						var foundURLs = str.match(settings.regex);
 						if (foundURLs != null) {
 							//console.log(foundURLs);
@@ -107,6 +105,8 @@ var tick = function() {
 				} else {
 					exports.fire(); 
 				}
+			}).on('error',function(e) {
+				console.log(e);
 			}).end();
 		} else {
 			//settings.allJobsDone();
