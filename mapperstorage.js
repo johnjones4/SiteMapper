@@ -63,7 +63,7 @@ exports.configure = function(callback) {
 					server.send({
 						text:    'Your map is complete! Please visit '+config.site.domain+'/#/map/'+job._id+' to see your completed map.\n\nThanks for using SiteMapper,\nJohn', 
 						from:    config.smtp.from, 
-						to:      "johnjones4@gmail.com",
+						to:      job.email,
 						subject: "Your Map of " + job.domain + " is Complete"
 					}, function(err, message) { 
 						if (err) console.log(err);
